@@ -26,7 +26,12 @@ public static class FluentResultExtensions
 
     private static IResult ToMinimalApiSuccessCode<T>(Result<T> result)
     {
-        throw new NotImplementedException();
+        return result switch
+        {
+            _ when result.HasSuccess<RecordCreated>() => TypedResults.Created(),
+            _ when result.HasSuccess<RecordUpdated>() => TypedResults.NoContent(),
+            _ => TypedResults.Ok(result.Value)
+        };
     }
 
     public static ProblemDetails AsProblemDetails<T>(this Result<T> result, HttpStatusCode statusCode)
@@ -40,7 +45,7 @@ public static class FluentResultExtensions
         return problemDetails;
     }
 
-    public static ProblemDetails AsProblemDetails(this Result result, HttpStatusCode statusCode)
+    private static ProblemDetails AsProblemDetails(this Result result, HttpStatusCode statusCode)
     {
         var problemDetails = new ProblemDetails()
         {

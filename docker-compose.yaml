@@ -1,0 +1,21 @@
+name: local-dev
+
+services:
+  sql:
+    container_name: local-dev-sql
+    hostname: local-dev-sql
+    image: mcr.microsoft.com/azure-sql-edge:latest
+    environment:
+      - SA_PASSWORD=Password!2
+      - ACCEPT_EULA=Y
+      - MSSQL_DATA_DIR=/var/opt/mssql/data
+      - MSSQL_LOG_DIR=/var/opt/mssql/log
+      - MSSQL_BACKUP_DIR=/var/opt/mssql/backup
+    ports:
+      - "2100:1433"
+    volumes:
+      - local-dev-sql:/var/opt/mssql
+
+volumes:
+  local-dev-sql:
+    driver: local

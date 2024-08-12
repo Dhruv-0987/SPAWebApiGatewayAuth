@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using ResultsPatternMinimalApis;
 using ResultsPatternMinimalApis.Database;
+using ResultsPatternMinimalApis.EndpointExtensions;
 using ResultsPatternMinimalApis.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,6 +30,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.MapGetWeatherForecast();
+app.MapUserEndpoints();
 
 app.Run();
 

@@ -1,8 +1,11 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace ResultsPatternMinimalApis.Models;
 
 public class User
 {
-    public string Id { get; set; } = default!;
+    [Key]
+    public Guid Id { get; init; }
     public string Name { get; set; } = default!;
     public string Email { get; set; } = default!;
 }
