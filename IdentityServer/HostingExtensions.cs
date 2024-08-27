@@ -4,6 +4,7 @@ using Duende.IdentityServer.Models;
 using IdentityServerAspNetIdentity.Data;
 using IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -40,10 +41,10 @@ internal static class HostingExtensions
                 // see https://docs.duendesoftware.com/identityserver/v6/fundamentals/resources/
                 options.EmitStaticAudienceClaim = true;
             })
-            .AddInMemoryIdentityResources(identityResources)
-            .AddInMemoryApiScopes(apiScopes)
-            .AddInMemoryClients(clients)
-            .AddInMemoryApiResources(apiResources)
+            .AddInMemoryIdentityResources(identityResources!)
+            .AddInMemoryApiScopes(apiScopes!)
+            .AddInMemoryClients(clients!)
+            .AddInMemoryApiResources(apiResources!)
             .AddAspNetIdentity<ApplicationUser>()
             .AddProfileService<MyProfileService>();
         
@@ -71,19 +72,18 @@ internal static class HostingExtensions
                 options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
             });
         
-        var corsOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+        var allowedCorsOrigins = builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
+        
+        var corsPolicy = new CorsPolicyBuilder()
+            .AllowAnyMethod()
+            .AllowAnyHeader()
+            .AllowCredentials()
+            .WithOrigins(allowedCorsOrigins!)
+            .Build();
         
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("_AllowOriginFromBlazorWASM",
-                policy =>
-                {
-                    policy
-                        .WithOrigins(corsOrigins!)
-                        .SetIsOriginAllowedToAllowWildcardSubdomains()
-                        .AllowAnyHeader()
-                        .AllowAnyMethod();
-                });
+            options.AddPolicy("_Ids", corsPolicy);
         });
 
         return builder.Build();
@@ -98,7 +98,7 @@ internal static class HostingExtensions
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseCors("_AllowOriginFromBlazorWASM");
+        app.UseCors("_Ids");
         app.UseStaticFiles();
         app.UseRouting();
         app.UseIdentityServer();

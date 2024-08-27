@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace WebApplication1.Controllers;
 
 [ApiController]
-[Route("api-gateway/auth")]
-public class AuthControllers: ControllerBase
+[Route("[controller]")]
+public class AccountController : ControllerBase
 {
+    
     [HttpGet("public")]
     public IActionResult Public()
     {
@@ -20,13 +21,13 @@ public class AuthControllers: ControllerBase
     [HttpGet("login")]
     public IActionResult Login()
     {
-        return RedirectToAction(nameof(GetInfo));
+        return Ok("You are logged in");
     }
     
     [HttpGet("info")]
     public IActionResult GetInfo()
     {
-        var claims = HttpContext.User.Claims.Select(x => new { x.Type, x.Value}).ToList();
+        var claims = HttpContext.User.Claims.Select(x => new { x.Type, x.Value }).ToList();
         return Ok(claims);
     }
     
@@ -38,7 +39,6 @@ public class AuthControllers: ControllerBase
         {
             RedirectUri = "/account/public"
         };
-        
         await HttpContext.SignOutAsync(OpenIdConnectDefaults.AuthenticationScheme, prop);
 
         await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);

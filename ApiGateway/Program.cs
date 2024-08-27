@@ -23,8 +23,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapControllers();
-
 app.ConfigureAuthMiddleware();
+
+app.MapControllers();
 
 app.Run();

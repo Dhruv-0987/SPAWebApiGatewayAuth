@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\ApiGateway\ApiGateway.csproj" />
+      <ProjectReference Include="..\IdentityServer\IdentityServerAspNetIdentity.csproj" />
       <ProjectReference Include="..\ResultsPatternMinimalApis\ResultsPatternMinimalApis.csproj" />
     </ItemGroup>
 

@@ -37,10 +37,10 @@ public static class AuthExtensions
         builder.Services.AddAuthentication(options =>
             {
                 options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultSignOutScheme = OpenIdConnectDefaults.AuthenticationScheme;
+                options.DefaultSignOutScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
             })
-            .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+            .AddCookie(options =>
             {
                 options.Cookie.Name = "spa_cookie";
                 options.Cookie.SameSite = SameSiteMode.Strict;
@@ -48,7 +48,7 @@ public static class AuthExtensions
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.SlidingExpiration = true;
             })
-            .AddOpenIdConnect(OpenIdConnectDefaults.AuthenticationScheme, options =>
+            .AddOpenIdConnect(options =>
             {
                 options.Authority = openIdConnectOptions.Authority;
 
@@ -81,8 +81,8 @@ public static class AuthExtensions
         var allowedCorsOrigins = builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
         
         var corsPolicy = new CorsPolicyBuilder()
-            .AllowAnyHeader()
             .AllowAnyMethod()
+            .AllowAnyHeader()
             .AllowCredentials()
             .WithOrigins(allowedCorsOrigins!)
             .Build();
@@ -97,10 +97,10 @@ public static class AuthExtensions
     
     public static WebApplication ConfigureAuthMiddleware(this WebApplication app)
     {
+        app.UseCors("_ApiGateway");
         app.UseAuthentication();
         app.UseAuthorization();
 
-        app.UseCors("_ApiGateway");
         return app;
     }
 }
