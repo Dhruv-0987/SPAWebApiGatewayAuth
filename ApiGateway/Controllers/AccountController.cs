@@ -20,7 +20,10 @@ public class AccountController : ControllerBase
     [HttpGet("login")]
     public IActionResult Login()
     {
-        return RedirectToAction(nameof(GetInfo));
+        return Challenge(new AuthenticationProperties
+        {
+            RedirectUri = "https://localhost:4200"
+        }, OpenIdConnectDefaults.AuthenticationScheme);
     }
     
     [Authorize]
