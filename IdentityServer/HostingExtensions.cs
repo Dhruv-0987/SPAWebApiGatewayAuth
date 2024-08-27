@@ -4,6 +4,7 @@ using Duende.IdentityServer.Models;
 using IdentityServerAspNetIdentity.Data;
 using IdentityServerAspNetIdentity.Models;
 using Microsoft.AspNetCore.Authentication.MicrosoftAccount;
+using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
@@ -24,6 +25,20 @@ internal static class HostingExtensions
         builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
             .AddEntityFrameworkStores<ApplicationDbContext>()
             .AddDefaultTokenProviders();
+        
+        builder.Services.AddAntiforgery(o =>
+        {
+            o.HeaderName = "XSRF-TOKEN";
+            o.Cookie.HttpOnly = true;
+            o.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+        });
+
+        builder.Services.Configure<CookiePolicyOptions>(options =>
+        {
+            options.MinimumSameSitePolicy = SameSiteMode.Lax;
+            options.HttpOnly = HttpOnlyPolicy.Always;
+            options.Secure = CookieSecurePolicy.Always;
+        });
 
         var apiScopes = builder.Configuration.GetSection("ApiScopes").Get<List<ApiScope>>();
         var clients = builder.Configuration.GetSection("Clients").Get<List<Client>>();
@@ -52,16 +67,6 @@ internal static class HostingExtensions
         builder.Services.Configure<List<ApiResource>>(builder.Configuration.GetSection("ApiResources"));
         
         builder.Services.AddAuthentication()
-            .AddGoogle(options =>
-            {
-                options.SignInScheme = IdentityServerConstants.ExternalCookieAuthenticationScheme;
-
-                // register your IdentityServer with Google at https://console.developers.google.com
-                // enable the Google+ API
-                // set the redirect URI to https://localhost:5001/signin-google
-                options.ClientId = "copy client ID from Google here";
-                options.ClientSecret = "copy client secret from Google here";
-            })
             .AddMicrosoftAccount(options =>
             {
                 var msOptions = builder.Configuration.GetSection(nameof(MicrosoftOptions)).Get<MicrosoftOptions>();

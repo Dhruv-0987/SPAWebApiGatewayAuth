@@ -18,12 +18,16 @@ export class AppComponent {
   constructor(private authService: AuthService) {}
 
   login(){
-    this.authService.login().subscribe((claims) => {
-      this.claims = claims;
-    });
+    this.authService.login().subscribe();
   }
 
   logout(){
     this.authService.logout().subscribe();
+  }
+
+  GetClaims(){
+    this.authService.getClaims().subscribe((claims) => {
+      this.claims = claims;
+    });
   }
 }

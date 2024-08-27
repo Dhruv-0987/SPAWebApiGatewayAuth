@@ -7,6 +7,7 @@ import { environment } from '../environments/environment';
   providedIn: 'root',
 })
 export class AuthService {
+
   constructor(private http: HttpClient) {}
 
   baseUrl: string = environment.BASE_URL;
@@ -17,6 +18,11 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    return this.http.get('/Account/login', { withCredentials: true });
+    window.location.href = `${this.baseUrl}/Account/logout`;
+    return NEVER;
+  }
+
+  getClaims(): Observable<any> {
+    return this.http.get<any>('/Account/info', { withCredentials: true });
   }
 }

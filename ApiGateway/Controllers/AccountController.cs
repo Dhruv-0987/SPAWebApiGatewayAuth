@@ -10,7 +10,6 @@ namespace WebApplication1.Controllers;
 [Route("[controller]")]
 public class AccountController : ControllerBase
 {
-    
     [HttpGet("public")]
     public IActionResult Public()
     {
@@ -21,9 +20,10 @@ public class AccountController : ControllerBase
     [HttpGet("login")]
     public IActionResult Login()
     {
-        return Ok("You are logged in");
+        return RedirectToAction(nameof(GetInfo));
     }
     
+    [Authorize]
     [HttpGet("info")]
     public IActionResult GetInfo()
     {

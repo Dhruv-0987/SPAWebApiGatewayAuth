@@ -8,6 +8,7 @@ export function BaseAddressInterceptor(req: HttpRequest<unknown>, next: HttpHand
   const newReq = req.clone({
     url: baseUrl + req.url,
     headers: req.headers.set('X-XSRF-TOKEN',"1"),
+    withCredentials: true
   });
 
   return next(newReq);
