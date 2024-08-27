@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -77,6 +78,29 @@ public static class AuthExtensions
                 options.CorrelationCookie.SameSite = SameSiteMode.Unspecified;
             });
         
+        var allowedCorsOrigins = builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
+        
+        var corsPolicy = new CorsPolicyBuilder()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins(allowedCorsOrigins!)
+            .Build();
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("_ApiGateway", corsPolicy);
+        });
+        
         return builder;
+    }
+    
+    public static WebApplication ConfigureAuthMiddleware(this WebApplication app)
+    {
+        app.UseAuthentication();
+        app.UseAuthorization();
+
+        app.UseCors("_ApiGateway");
+        return app;
     }
 }

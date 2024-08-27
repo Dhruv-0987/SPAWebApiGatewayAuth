@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\Ap
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityServerAspNetIdentity", "IdentityServer\IdentityServerAspNetIdentity.csproj", "{FBE98939-8B57-4ECD-B983-FD7BF73A4684}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppHost", "AppHost\AppHost.csproj", "{2260F92A-CC50-4C5B-80B5-8F8CB308BEA6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{FBE98939-8B57-4ECD-B983-FD7BF73A4684}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBE98939-8B57-4ECD-B983-FD7BF73A4684}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBE98939-8B57-4ECD-B983-FD7BF73A4684}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2260F92A-CC50-4C5B-80B5-8F8CB308BEA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2260F92A-CC50-4C5B-80B5-8F8CB308BEA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2260F92A-CC50-4C5B-80B5-8F8CB308BEA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2260F92A-CC50-4C5B-80B5-8F8CB308BEA6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
