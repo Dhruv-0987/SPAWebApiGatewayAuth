@@ -25,7 +25,7 @@ public class AccountController : ControllerBase
         return Redirect(redirectUri);
     }
     
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet("info")]
     public IActionResult GetInfo()
     {
@@ -33,7 +33,6 @@ public class AccountController : ControllerBase
         return Ok(claims);
     }
     
-    [Authorize]
     [HttpGet("logout")]
     public async Task Logout()
     {

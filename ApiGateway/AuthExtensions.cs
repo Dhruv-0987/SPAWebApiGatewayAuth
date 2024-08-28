@@ -11,7 +11,7 @@ public static class AuthExtensions
 {
     public static WebApplicationBuilder ConfigureAuth(this WebApplicationBuilder builder)
     {
-        builder.Services.AddOptions<OpenIdConnectOptions>()
+        builder.Services.AddOptions<Models.OpenIdConnectOptions>()
             .BindConfiguration(nameof(OpenIdConnectOptions))
             .ValidateDataAnnotations();
         
@@ -28,6 +28,10 @@ public static class AuthExtensions
             options.HttpOnly = HttpOnlyPolicy.Always;
             options.Secure = CookieSecurePolicy.Always;
         });
+
+        builder.Services.AddHttpContextAccessor();
+        
+        builder.Services.AddBff();
         
         builder.Services.AddAuthorizationBuilder()
             .AddPolicy("AuthenticatedUser", policy =>
@@ -36,7 +40,7 @@ public static class AuthExtensions
             });
         
         var openIdConnectOptions = builder.Services.BuildServiceProvider()
-            .GetRequiredService<IOptions<OpenIdConnectOptions>>().Value;
+            .GetRequiredService<IOptions<Models.OpenIdConnectOptions>>().Value;
 
         builder.Services.AddAuthentication(options =>
             {
@@ -81,6 +85,14 @@ public static class AuthExtensions
                 options.NonceCookie.SameSite = SameSiteMode.Unspecified;
                 options.CorrelationCookie.SameSite = SameSiteMode.Unspecified;
             });
+
+        builder.Services.AddSingleton<CookieOidcAndTokenRefresher>();
+        builder.Services.AddOptions<CookieAuthenticationOptions>(CookieAuthenticationDefaults.AuthenticationScheme)
+            .Configure<CookieOidcAndTokenRefresher>((cookieOptions, refresher) =>
+            {
+                cookieOptions.Events.OnValidatePrincipal = context => 
+                    refresher.ValidateOrRefreshTokenAsync(context, OpenIdConnectDefaults.AuthenticationScheme);
+            });
         
         var allowedCorsOrigins = builder.Configuration.GetSection("AllowedCorsOrigins").Get<string[]>();
         
@@ -103,8 +115,10 @@ public static class AuthExtensions
     {
         app.UseCors("_ApiGateway");
         app.UseAuthentication();
+        app.UseBff();
         app.UseAuthorization();
 
+        app.MapBffManagementEndpoints();
         return app;
     }
 }

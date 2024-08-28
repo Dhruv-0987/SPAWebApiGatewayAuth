@@ -14,6 +14,7 @@ export class AppComponent {
   title = 'AngularClient';
 
   claims: { type: string, value: string }[] = [];
+  forecast: { date: any, temperatureC: number, summary: string | null, temperatureF: number }[] = [];
 
   constructor(private authService: AuthService) {}
 
@@ -29,6 +30,13 @@ export class AppComponent {
     this.authService.getClaims().subscribe((claims) => {
       console.log(claims);
       this.claims = claims;
+    });
+  }
+
+  GetWeather(){
+    this.authService.getWether().subscribe((forcast) => {
+      console.log(forcast);
+      this.forecast = forcast;
     });
   }
 }

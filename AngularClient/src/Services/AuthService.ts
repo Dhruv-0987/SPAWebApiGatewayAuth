@@ -12,17 +12,23 @@ export class AuthService {
 
   baseUrl: string = environment.BASE_URL;
 
+  logoutUrl: string = '/Account/logout';
+
   login(): Observable<any> {
     window.location.href = `${this.baseUrl}/Account/login`;
     return NEVER;
   }
 
   logout(): Observable<any> {
-    window.location.href = `${this.baseUrl}/Account/logout`;
+    window.location.href = `${this.baseUrl}${this.logoutUrl}`;
     return NEVER;
   }
 
   getClaims(): Observable<any> {
     return this.http.get<any>('/Account/info', { withCredentials: true });
+  }
+
+  getWether(): Observable<any> {
+    return this.http.get<any>('/api/weather-forecast', { withCredentials: true });
   }
 }

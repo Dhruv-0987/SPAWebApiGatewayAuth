@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => { options.Filters.Add(new CustomAuthFilter()); });
 
 // add the service and config for all auth related stuff
 builder.ConfigureAuth()
