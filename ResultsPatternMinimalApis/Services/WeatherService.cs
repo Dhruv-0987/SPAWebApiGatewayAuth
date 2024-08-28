@@ -5,7 +5,7 @@ namespace ResultsPatternMinimalApis;
 
 public class WeatherService
 {
-    public Result<WeatherForecast[]> GetForecast()
+    public FluentResults.Result<WeatherForecast[]> GetForecast()
     {
         var summaries = new[]
         {
@@ -21,7 +21,6 @@ public class WeatherService
                 ))
             .ToArray();
         
-        var result = new Result<WeatherForecast[]>(true, Error.None, forecast);
-        return result;
+        return FluentResults.Result.Ok(forecast);
     }
 }

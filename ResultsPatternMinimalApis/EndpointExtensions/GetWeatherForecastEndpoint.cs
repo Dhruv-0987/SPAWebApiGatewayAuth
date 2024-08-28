@@ -7,10 +7,10 @@ public static class GetWeatherForecastEndpoint
 {
     public static IEndpointRouteBuilder MapGetWeatherForecast(this IEndpointRouteBuilder endpoints)
     {
-        endpoints.MapGet("/weatherforecast", ([FromServices] WeatherService weatherService) =>
+        endpoints.MapGet("/api/weather-forecast", ([FromServices] WeatherService weatherService) =>
             {
                 var result = weatherService.GetForecast(); // Assuming GetForecast is async
-                return result.Match(() => Results.Ok(result.Value), error => Results.NotFound(error.Description));
+                return result.ToMinimalApiResult();
             })
             .Produces(StatusCodes.Status200OK, typeof(WeatherForecast[]))
             .Produces(StatusCodes.Status404NotFound);

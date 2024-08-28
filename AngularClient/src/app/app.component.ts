@@ -13,7 +13,7 @@ import { HttpClientModule } from '@angular/common/http';
 export class AppComponent {
   title = 'AngularClient';
 
-  claims: any[] = [];
+  claims: { type: string, value: string }[] = [];
 
   constructor(private authService: AuthService) {}
 
@@ -27,6 +27,7 @@ export class AppComponent {
 
   GetClaims(){
     this.authService.getClaims().subscribe((claims) => {
+      console.log(claims);
       this.claims = claims;
     });
   }

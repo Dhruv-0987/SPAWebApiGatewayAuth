@@ -29,7 +29,11 @@ public static class AuthExtensions
             options.Secure = CookieSecurePolicy.Always;
         });
         
-        builder.Services.AddAuthorization();
+        builder.Services.AddAuthorizationBuilder()
+            .AddPolicy("AuthenticatedUser", policy =>
+            {
+                policy.RequireAuthenticatedUser();
+            });
         
         var openIdConnectOptions = builder.Services.BuildServiceProvider()
             .GetRequiredService<IOptions<OpenIdConnectOptions>>().Value;

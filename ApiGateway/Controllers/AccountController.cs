@@ -20,10 +20,9 @@ public class AccountController : ControllerBase
     [HttpGet("login")]
     public IActionResult Login()
     {
-        return Challenge(new AuthenticationProperties
-        {
-            RedirectUri = "https://localhost:4200"
-        }, OpenIdConnectDefaults.AuthenticationScheme);
+        var referer = HttpContext.Request.Headers.Referer.ToString();
+        var redirectUri = string.IsNullOrEmpty(referer) ? "https://localhost:4200" : referer;
+        return Redirect(redirectUri);
     }
     
     [Authorize]

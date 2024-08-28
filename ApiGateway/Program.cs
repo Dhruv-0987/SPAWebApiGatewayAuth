@@ -10,7 +10,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
 
 // add the service and config for all auth related stuff
-builder.ConfigureAuth();
+builder.ConfigureAuth()
+    .ConfigureYarpProviders(); // yarp proxy for routing and adding the access token as a header
 
 var app = builder.Build();
 
@@ -23,7 +24,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.ConfigureAuthMiddleware();
+app.ConfigureAuthMiddleware()
+    .ConfigureYarpMiddleware();
 
 app.MapControllers();
 app.Run();

@@ -21,7 +21,4 @@ public static class ResultExtensions
     {
         return result.IsSuccess ? onSuccess() : onFailure();
     }
-    
-    
-
 }
