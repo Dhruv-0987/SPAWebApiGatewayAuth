@@ -1,5 +1,5 @@
-using WebApplication1;
-
+using ApiGateway;
+using ApiGateway.HostingExtensions;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers(options => { options.Filters.Add(new CustomAuthFilter()); });
+builder.Services.AddControllers();
 
 // add the service and config for all auth related stuff
 builder.ConfigureAuth()

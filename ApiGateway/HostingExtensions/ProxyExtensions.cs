@@ -1,6 +1,7 @@
 using Microsoft.Extensions.Options;
+using WebApplication1;
 
-namespace WebApplication1;
+namespace ApiGateway.HostingExtensions;
 
 public static class ProxyExtensions
 {

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Authentication;
 using Yarp.ReverseProxy.Transforms;
 using Yarp.ReverseProxy.Transforms.Builder;
 
-namespace WebApplication1;
+namespace ApiGateway;
 
 public class AccessTokenTransformProvider(IHttpContextAccessor httpContextAccessor) : ITransformProvider
 {

@@ -9,7 +9,7 @@ using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Protocols.OpenIdConnect;
 using Microsoft.IdentityModel.Tokens;
 
-namespace WebApplication1;
+namespace ApiGateway;
 
 internal sealed class CookieOidcAndTokenRefresher(
     IOptionsMonitor<OpenIdConnectOptions> oidcOptionsMonitor,

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebApplication1.Controllers;
+namespace ApiGateway.Controllers;
 
 [ApiController]
 [Route("[controller]")]
@@ -16,16 +16,14 @@ public class AccountController : ControllerBase
         return Ok("Welcome to API Gateway");
     }
 
-    [Authorize]
+    [AllowAnonymous]
     [HttpGet("login")]
     public IActionResult Login()
     {
-        var referer = HttpContext.Request.Headers.Referer.ToString();
-        var redirectUri = string.IsNullOrEmpty(referer) ? "https://localhost:4200" : referer;
-        return Redirect(redirectUri);
+        return Challenge(new AuthenticationProperties { RedirectUri = "https://localhost:4200" }, OpenIdConnectDefaults.AuthenticationScheme);
     }
     
-    [AllowAnonymous]
+    [Authorize]
     [HttpGet("info")]
     public IActionResult GetInfo()
     {

@@ -1,4 +1,4 @@
-namespace WebApplication1;
+namespace ApiGateway;
 
 public static class AuthConstants
 {
