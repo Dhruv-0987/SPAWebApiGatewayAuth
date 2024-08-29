@@ -13,6 +13,11 @@ builder.Services.AddControllers();
 builder.ConfigureAuth()
     .ConfigureYarpProviders(); // yarp proxy for routing and adding the access token as a header
 
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

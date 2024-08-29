@@ -60,6 +60,7 @@ public static class AuthExtensions
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
+                options.SessionStore = new RedisSessionStore(builder.Services);
             })
             .AddOpenIdConnect(options =>
             {
