@@ -24,6 +24,6 @@ The above approach makes sure there is nothing on the browser which can used to 
 
 1. Run `docker-compose up` to start the sql server and the redis store
 2. Run the Aspier app host which will start up the IdentityServer, the API Gateway and the resource api we want to fetch data from via authroised requests.
-3. Server the Angular app by `ng s -ssl` which will be served on `https://localhost:4200`, here you need to make sure the angular is server on `https` as the cookie will be set on te server as secure and same site which means the browser wont't attach the cookie with each request unless you server it on `https`.
+3. Serve the Angular app by `ng s -ssl` which will be served on `https://localhost:4200`, here you need to make sure the angular is served on `https` as the cookie will be set on the server as secure and same site which means the browser won't attach the cookie with each request unless you server it on `https`.
 
 
