@@ -31,6 +31,7 @@ public class AccountController : ControllerBase
         return Ok(claims);
     }
     
+    [Authorize]
     [HttpGet("logout")]
     public async Task Logout()
     {

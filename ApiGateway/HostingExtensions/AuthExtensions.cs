@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
-using WebApplication1;
 
 namespace ApiGateway.HostingExtensions;
 
@@ -55,11 +54,18 @@ public static class AuthExtensions
                 options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
                 options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
                 options.SlidingExpiration = true;
+                
                 options.Events.OnRedirectToLogin = context =>
                 {
                     context.Response.StatusCode = 401;
                     return Task.CompletedTask;
                 };
+                options.Events.OnRedirectToAccessDenied = context =>
+                {
+                    context.Response.StatusCode = 403;
+                    return Task.CompletedTask;
+                };
+                
                 options.SessionStore = new RedisSessionStore(builder.Services);
             })
             .AddOpenIdConnect(options =>

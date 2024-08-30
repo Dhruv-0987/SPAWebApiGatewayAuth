@@ -13,6 +13,7 @@ builder.Services.AddControllers();
 builder.ConfigureAuth()
     .ConfigureYarpProviders(); // yarp proxy for routing and adding the access token as a header
 
+// redis for the cached session store for cookies
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
