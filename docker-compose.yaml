@@ -16,6 +16,23 @@ services:
     volumes:
       - local-dev-sql:/var/opt/mssql
   
+  cosmosdb-emulator:
+    image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
+    environment:
+      AZURE_COSMOS_EMULATOR_PARTITION_COUNT: 3
+      AZURE_COSMOS_EMULATOR_ENABLE_DATA_PERSISTENCE: "true" 
+    ports:
+      - "8081:8081" # Cosmos DB REST API endpoint
+      - "10251:10251" # Local emulator port
+      - "10252:10252"
+      - "10253:10253"
+      - "10254:10254"
+    volumes:
+      - ./cosmosdb:/var/lib/cosmosdb-emulator 
+    command: /usr/local/bin/start.sh
+    networks:
+      - cosmosdb-network
+      
   redis:
     image: redis
     container_name: redis
@@ -25,3 +42,7 @@ services:
 volumes:
   local-dev-sql:
     driver: local
+    
+networks:
+  cosmosdb-network:
+    driver: bridge

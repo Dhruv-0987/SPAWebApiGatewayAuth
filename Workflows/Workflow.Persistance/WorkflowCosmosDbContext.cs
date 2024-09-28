@@ -28,23 +28,59 @@ public class WorkflowCosmosDbContext: IWorkflowCosmosDbContext
         }).Result.Container;
     }
     
-    public Task<Result<string>> CreateWorkflowInstanceAsync(WorkflowDefinition workflowDefinition)
+    public async Task<Result<string>> CreateWorkflowInstanceAsync(WorkflowInstance workflowInstance)
     {
-        throw new NotImplementedException();
+        var response = await WorkflowInstance.UpsertItemAsync(workflowInstance, new PartitionKey(workflowInstance.Name), new ItemRequestOptions()
+        {
+            EnableContentResponseOnWrite = false
+        });
+        
+        return Result.Ok(response.ETag);
     }
 
-    public Task<Result<string>> GetWorkflowInstanceAsync(Guid id)
+    public async Task<Result<WorkflowInstance>> GetWorkflowInstanceAsync(string id, string workflowName)
     {
-        throw new NotImplementedException(); 
+        var response = await WorkflowInstance.ReadItemAsync<WorkflowInstance>(id, new PartitionKey(workflowName));
+        
+        var workflowInstance = response.Resource;
+        return Result.Ok(workflowInstance);
     }
 
-    public Task<Result<string>> UpdateWorkflowInstanceAsync(WorkflowInstance workflowInstance)
+    public async Task<Result<string>> UpdateWorkflowInstanceAsync(WorkflowInstance workflowInstance)
     {
-        throw new NotImplementedException();
+        var response = await WorkflowInstance.UpsertItemAsync(workflowInstance, new PartitionKey(workflowInstance.Name), new ItemRequestOptions
+        {
+            EnableContentResponseOnWrite = false
+        });
+        
+        return Result.Ok(response.ETag);
     }
 
-    public Task<Result<Guid>> AddPayloadAsync(WorkStepPayload workStepPayload)
+    public async Task<Result<string>> AddPayloadAsync(string payload)
     {
-        throw new NotImplementedException();
+        var payloadId = Guid.NewGuid().ToString();
+        var workStepPayload = new WorkStepPayload
+        {
+            WorkStepPayloadId = payloadId,
+            Payload = payload,
+            CreatedAt = DateTime.Now
+        };
+        
+        var response = await WorkStepPayload.UpsertItemAsync(workStepPayload, new PartitionKey(workStepPayload.WorkStepPayloadId), new ItemRequestOptions
+        {
+            EnableContentResponseOnWrite = false
+        });
+        
+        return Result.Ok(payloadId);
+    }
+
+    public async Task<Result<string>> GetPayloadAsync(string payloadId)
+    {
+        var response = await WorkStepPayload.ReadItemAsync<WorkStepPayload>(payloadId, new PartitionKey(payloadId), new ItemRequestOptions
+        {
+            EnableContentResponseOnWrite = false
+        });
+        
+        return Result.Ok(response.ETag);
     }
 }

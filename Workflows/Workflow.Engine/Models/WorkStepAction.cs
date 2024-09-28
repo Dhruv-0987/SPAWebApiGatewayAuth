@@ -1,6 +1,6 @@
 namespace Workflow.Engine;
 
-public abstract class WorkStepAction
+public class WorkStepAction
 {
     public required string Name { get; set; }
     public required string NextWorkStep { get; set; }
