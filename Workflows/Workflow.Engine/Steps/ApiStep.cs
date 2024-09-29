@@ -5,6 +5,7 @@ public class ApiStep: WorkStep
     public required string NextStepIfSuccess { get; set; }
     public required string NextStepIfFailure { get; set; }
     public required string ApiUrl { get; set; }
+    public bool UpdateWorkFlowFromResponse { get; set; }
     
     public override List<WorkStepAction>? GetActions()
     {

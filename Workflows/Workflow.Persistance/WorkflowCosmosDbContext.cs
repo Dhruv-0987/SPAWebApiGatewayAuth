@@ -55,8 +55,19 @@ public class WorkflowCosmosDbContext: IWorkflowCosmosDbContext
         
         return Result.Ok(response.ETag);
     }
+    
+    public async Task<Result<string>> UpdateWorkflowInstanceAsync(WorkflowInstance workflowInstance, string etag)
+    {
+        var response = await WorkflowInstance.UpsertItemAsync(workflowInstance, new PartitionKey(workflowInstance.Name), new ItemRequestOptions
+        {
+            EnableContentResponseOnWrite = false,
+            IfMatchEtag = etag
+        });
+        
+        return Result.Ok(response.ETag);
+    }
 
-    public async Task<Result<string>> AddPayloadAsync(string payload)
+    public async Task<Result<string>> AddPayloadAsync(string? payload)
     {
         var payloadId = Guid.NewGuid().ToString();
         var workStepPayload = new WorkStepPayload

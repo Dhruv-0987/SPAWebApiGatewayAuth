@@ -8,6 +8,11 @@
 
     <ItemGroup>
       <PackageReference Include="FluentResults" Version="3.16.0" />
+      <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Workflows.ClientLib\Workflows.ClientLib.csproj" />
     </ItemGroup>
 
 </Project>

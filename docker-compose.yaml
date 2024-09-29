@@ -2,8 +2,8 @@ name: spa-api-gateway-auth
 
 services:
   sql:
-    container_name: local-dev-sql
-    hostname: local-dev-sql
+    container_name: spa-local-dev-sql
+    hostname: spa-local-dev-sql
     image: mcr.microsoft.com/azure-sql-edge:latest
     environment:
       - SA_PASSWORD=Password!2
@@ -14,7 +14,7 @@ services:
     ports:
       - "2100:1433"
     volumes:
-      - local-dev-sql:/var/opt/mssql
+      - spa-local-dev-sql:/var/opt/mssql
   
   cosmosdb-emulator:
     image: mcr.microsoft.com/cosmosdb/linux/azure-cosmos-emulator:latest
@@ -33,14 +33,14 @@ services:
     networks:
       - cosmosdb-network
       
-  redis:
-    image: redis
-    container_name: redis
-    ports:
-      - "6379:6379"
+#  redis:
+#    image: redis
+#    container_name: redis
+#    ports:
+#      - "6379:6379"
 
 volumes:
-  local-dev-sql:
+  spa-local-dev-sql:
     driver: local
     
 networks:

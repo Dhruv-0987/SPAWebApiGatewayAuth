@@ -1,7 +1,7 @@
 using Workflow.Engine.Interfaces;
 using Workflow.Engine.Models;
 
-namespace Workflow.Engine;
+namespace Workflow.Engine.Processors;
 
 public class WorkflowEngine: IWorkflowEngine
 {
